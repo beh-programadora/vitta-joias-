@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vitta Joias</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: #fff;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+ .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 5%;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #a77c5a;
+  flex: 1;
+  text-align: left;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #a77c5a;
+}
+
+#cart-btn {
+  font-size: 1.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+
+    .hero {
+      text-align: center;
+      padding: 100px 20px 60px;
+      background: linear-gradient(to right, #f4f4f4, #fff);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+   .btn {
+  display: inline-block;
+  background-color: #a77c5a;  /* tom marrom elegante */
+  color: #fff;
+  padding: 12px 24px;
+  text-decoration: none;
+  border: 2px solid #a77c5a;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #fff;
+  color: #a77c5a;
+  border: 2px solid #a77c5a;
+}
+
+
+    section.destaques {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    section.destaques h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    section.destaques p {
+      margin: 0 auto;
+      max-width: 700px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .valores {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .valores > div {
+      max-width: 250px;
+      text-align: center;
+    }
+
+    .valores img {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      background-color: #f4f4f4;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">Vitta Joias</div>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Início</a></li>
+      <li><a href="produtos.html">Produtos</a></li>
+      <li><a href="sobre.html">Sobre</a></li>
+      <li><a href="contato.html">Contato</a></li>
+    </ul>
+  </nav>
+
+  <button id="cart-btn" title="Carrinho">&#128722;</button>
+</header>
+
+  <!-- Hero / Boas-vindas -->
+  <section class="hero">
+    <div class="container">
+      <h1>Descubra o Brilho da Elegância</h1>
+      <p>Joias finas com design exclusivo para todos os momentos especiais</p>
+      <a href="produtos.html" class="btn">Conheça Nossa Coleção</a>
+    </div>
+  </section>
+
+  <!-- Introdução -->
+  <section class="destaques">
+    <div class="container">
+      <h2>Bem-vindo à Vitta Joias</h2>
+      <p>
+        Na Vitta Joias, acreditamos que cada joia carrega uma história.<br>
+        Por isso, criamos peças que unem sofisticação, delicadeza e autenticidade.<br>
+        Seja para presentear ou para marcar um momento especial, temos o brilho ideal para você.
+      </p>
+    </div>
+  </section>
+
+  <!-- Valores -->
+  <section class="destaques">
+    <div class="container">
+      <div class="valores">
+        <div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Qualidade">
+          <h3>Qualidade Premium</h3>
+          <p>Materiais nobres e acabamento impecável em cada peça.</p>
+        </div>
+        <div>
+          <img src="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" alt="Elegância">
+          <h3>Elegância Atemporal</h3>
+          <p>Joias que combinam com todos os estilos e ocasiões.</p>
+        </div>
+        <div>
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Confiança">
+          <h3>Confiança e Tradição</h3>
+          <p>Atendimento de excelência e garantia de procedência.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chamada para ação -->
+  <section class="destaques">
+    <div class="container">
+      <h2>Explore o mundo Vitta</h2>
+      <p>
+        Veja nossas coleções exclusivas e encontre a joia perfeita para você.
+      </p>
+      <a href="produtos.html" class="btn" style="margin-top: 20px;">Ver Produtos</a>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 Vitta Joias · Todos os direitos reservados</p>
+  </footer>
+
+</body>
+</html>

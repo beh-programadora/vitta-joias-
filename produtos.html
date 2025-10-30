@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Produtos - Vitta Joias</title>
+  <link rel="stylesheet" href="style.css" /> 
+  <script src="script.js"></script>
+
+ <style>
+  /* GERAL */
+  :root {
+    --cor-principal: #2a9d8f;
+    --cor-secundaria: #21867a;
+    --cor-cinza: #ccc;
+    --cor-clara: #fff;
+    --cor-escura: #111;
+    --cor-texto: #333;
+    --sombra: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --raio-borda: 8px;
+    --transicao: 0.3s ease;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+  }
+
+  /* TABS */
+  .tabs {
+    max-width: 900px;
+    margin: 40px auto 20px;
+    padding: 0 20px;
+  }
+
+  .tab-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .tab-buttons button {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--cor-cinza);
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: background-color var(--transicao);
+  }
+
+  .tab-buttons button.active {
+    background-color: var(--cor-principal);
+    color: white;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  /* PRODUTO */
+  .produto {
+    background: var(--cor-clara);
+    border: 1px solid var(--cor-cinza);
+    padding: 15px;
+    text-align: center;
+    border-radius: var(--raio-borda);
+    box-shadow: var(--sombra);
+    transition: transform 0.2s ease;
+  }
+
+  .produto:hover {
+    transform: translateY(-5px);
+  }
+
+  .produto img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 12px;
+  }
+
+  .produto h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--cor-texto);
+  }
+
+  .produto p {
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--cor-escura);
+  }
+
+  .add-cart-btn {
+    background-color: var(--cor-principal);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color var(--transicao);
+  }
+
+  .add-cart-btn:hover {
+    background-color: var(--cor-secundaria);
+  }
+
+  /* CARRINHO */
+  .cart {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 320px;
+    max-height: 90vh;
+    background: white;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
+    border-radius: var(--raio-borda) 0 0 var(--raio-borda);
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1050;
+    display: none;
+    flex-direction: column;
+    transition: all var(--transicao);
+  }
+
+  .cart.active {
+    display: flex;
+  }
+
+  .cart h2 {
+    margin: 0 0 15px;
+    color: var(--cor-principal);
+    font-weight: 700;
+  }
+
+  #close-cart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    transition: color var(--transicao);
+  }
+
+  #close-cart:hover {
+    color: var(--cor-principal);
+  }
+
+  #cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    flex-grow: 1;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  #cart-items li {
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--cor-texto);
+  }
+
+  .cart-total {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: var(--cor-escura);
+    font-weight: 700;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    background-color: var(--cor-principal);
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: background-color var(--transicao);
+    margin-bottom: 10px;
+  }
+
+  .btn:hover {
+    background-color: var(--cor-secundaria);
+  }
+
+  /* OVERLAY */
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transicao);
+    z-index: 1000;
+  }
+
+  #overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* PERGUNTA FINALIZAÇÃO */
+  #cart-question {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1rem;
+    color: #222;
+  }
+
+  #cart-question button {
+    width: 48%;
+    margin: 10px 1% 0 1%;
+    padding: 10px 0;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transicao);
+  }
+
+  #continue-shopping {
+    background-color: var(--cor-cinza);
+    color: #333;
+  }
+
+  #continue-shopping:hover {
+    background-color: #bbb;
+  }
+
+  #go-to-checkout {
+    background-color: var(--cor-principal);
+    color: white;
+  }
+
+  #go-to-checkout:hover {
+    background-color: var(--cor-secundaria);
+  }
+</style>
+
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Vitta Joias</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="produtos.html" class="active">Produtos</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+      <button id="cart-btn" aria-label="Abrir carrinho">🛒</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="tabs">
+      <h1>Nossas Joias</h1>
+      <p>Escolha a categoria que deseja explorar.</p>
+
+      <div class="tab-buttons" role="tablist">
+        <button class="tab-btn active" data-tab="pulseiras" role="tab" aria-selected="true" aria-controls="pulseiras">Pulseiras</button>
+        <button class="tab-btn" data-tab="brincos" role="tab" aria-selected="false" aria-controls="brincos">Brincos</button>
+        <button class="tab-btn" data-tab="aneis" role="tab" aria-selected="false" aria-controls="aneis">Anéis</button>
+        <button class="tab-btn" data-tab="colares" role="tab" aria-selected="false" aria-controls="colares">Colares</button>
+      </div>
+
+      <div id="pulseiras" class="tab-content active" role="tabpanel" aria-labelledby="pulseiras-tab">
+        <div class="produto" data-id="101" data-name="Pulseira de Prata" data-price="300.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/Pulseira-.webp?v=1747837093466" alt="Pulseira de Prata" />
+          <h3>Pulseira de Prata</h3>
+          <p>R$ 300,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+        <div class="produto" data-id="102" data-name="Pulseira Dourada" data-price="1500.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/Pulseira-Life-Mocha-em-Prata-925-com-Banho-de-Ouro-Amarelo.webp?v=1747837096188" alt="Pulseira Dourada" />
+          <h3>Pulseira Dourada</h3>
+          <p>R$ 1.500,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+
+      <div id="brincos" class="tab-content" role="tabpanel" aria-labelledby="brincos-tab">
+        <div class="produto" data-id="201" data-name="Brinco argola" data-price="150.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/Argola-Redonda.webp?v=1747774659187" alt="Brinco de Prata" />
+          <h3>Brinco argola</h3>
+          <p>R$ 150,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+        <div class="produto" data-id="202" data-name="Brinco de pérola " data-price="650.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/brinco%20p%C3%A9rola.webp?v=1747836807426" alt="Brinco Dourado" />
+          <h3>Brinco de pérola</h3>
+          <p>R$ 650,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+
+      <div id="aneis" class="tab-content" role="tabpanel" aria-labelledby="aneis-tab">
+        <div class="produto" data-id="301" data-name="Anel de Prata" data-price="200.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/Anel-Solitario.webp?v=1747836940820" alt="Anel de Prata" />
+          <h3>Anel de Prata</h3>
+          <p>R$ 200,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+        <div class="produto" data-id="302" data-name="Anel de ouro branco " data-price="3500.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/Anel-Ouro-Branco-.webp?v=1747836944652" alt="Anel Dourado" />
+          <h3>Anel ouro branco </h3>
+          <p>R$ 3500,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+
+      <div id="colares" class="tab-content" role="tabpanel" aria-labelledby="colares-tab">
+        <div class="produto" data-id="401" data-name="Colar diamante" data-price="1500.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/colar%20diamante.webp?v=1747773944878" alt="Colar de Prata" />
+          <h3>Colar de diamante</h3>
+          <p>R$ 1500,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+        <div class="produto" data-id="402" data-name="Colar Dourado" data-price="2000.00">
+          <img src="https://cdn.glitch.global/13dde424-6792-46ed-9417-a32e4a0a26a5/pixlr-image-generator-1a5b9f23-170f-424b-a99f-a7110f835b0d.png?v=1747774526974" alt="Colar Dourado" />
+          <h3>Colar Dourado</h3>
+          <p>R$ 2.000,00</p>
+          <button class="add-cart-btn">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart" aria-label="Carrinho de compras" aria-live="polite" aria-atomic="true" style="display:none;">
+  <button id="close-cart" aria-label="Fechar carrinho">×</button>
+  <h2>Carrinho</h2>
+  <ul id="cart-items"></ul>
+  <p id="cart-total">Total: R$ 0,00</p>
+
+  <div id="cart-question" style="display:none;">
+    <p>Deseja continuar comprando ou finalizar?</p>
+    <button id="continue-shopping">Continuar Comprando</button>
+    <button id="go-to-checkout">Finalizar Compra</button>
+  </div>
+</aside>
+
+<div id="overlay" tabindex="-1" style="display:none;"></div>
+
+</body>
+</html>

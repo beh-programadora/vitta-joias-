@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Página de pagamento da Vitta Jóias com opções de cartão, pix, boleto e PayPal." />
+  <title>Pagamento - Vitta Jóias</title>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: #fff;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background-color: #fafafa;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      padding-top: 30px;
+      color: #a77c5a;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 30px 20px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #a77c5a;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #8a6246;
+    }
+
+    #pix-extra {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #pix-extra img {
+      margin-top: 10px;
+      max-width: 200px;
+    }
+
+    #success {
+      display: none;
+      text-align: center;
+      color: green;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    #voltar-para-principal {
+      display: block;
+      margin: 0 auto 40px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pagamento</h1>
+
+    <form id="payment-form">
+      <label for="payment-method">Escolha a forma de pagamento:</label>
+      <select id="payment-method" name="payment-method" required>
+        <option value="">Selecione...</option>
+        <option value="card">Cartão de Crédito</option>
+        <option value="pix">Pix</option>
+        <option value="boleto">Boleto Bancário</option>
+        <option value="paypal">Carteira Digital (PayPal)</option>
+      </select>
+
+      <div id="form-details"></div>
+
+      <div id="pix-extra" style="display: none;">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=pix@vittajoias.br&size=200x200" alt="QR Code Pix" />
+        <p><strong>Chave Pix:</strong> <span id="pix-key">pix@vittajoias.br</span></p>
+        <button type="button" onclick="copyPixKey()" class="btn">Copiar chave Pix</button>
+      </div>
+
+      <button type="submit" class="btn">Confirmar Pagamento</button>
+    </form>
+
+    <div id="success">✅ Pagamento confirmado com sucesso!</div>
+  </div>
+
+  <button id="voltar-para-principal" class="btn">Voltar ao site</button>
+
+  <script>
+    const formDetails = document.getElementById('form-details');
+    const methodSelect = document.getElementById('payment-method');
+    const form = document.getElementById('payment-form');
+    const successMsg = document.getElementById('success');
+    const pixExtra = document.getElementById('pix-extra');
+
+    methodSelect.addEventListener('change', () => {
+      const method = methodSelect.value;
+      let html = "";
+
+      pixExtra.style.display = "none";
+
+      if (method === "card") {
+        html = `
+          <label for="card-name">Nome no cartão:</label>
+          <input id="card-name" name="card-name" type="text" required />
+
+          <label for="card-number">Número do cartão:</label>
+          <input id="card-number" name="card-number" type="text" placeholder="1234 5678 9012 3456" maxlength="19" required />
+
+          <label for="card-expiry">Validade:</label>
+          <input id="card-expiry" name="card-expiry" type="text" placeholder="MM/AA" maxlength="5" required />
+
+          <label for="card-cvv">CVV:</label>
+          <input id="card-cvv" name="card-cvv" type="text" placeholder="123" maxlength="3" required />
+        `;
+      } else if (method === "pix") {
+        html = `<p>Escaneie o QR Code ou copie a chave Pix abaixo:</p>`;
+        pixExtra.style.display = "block";
+      } else if (method === "boleto") {
+        html = `<p>Um boleto será gerado automaticamente após a confirmação.</p>`;
+      } else if (method === "paypal") {
+        html = `<p>Você será redirecionado para o PayPal após a confirmação.</p>`;
+      }
+
+      formDetails.innerHTML = html;
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.style.display = 'none';
+      successMsg.style.display = 'block';
+    });
+
+    function copyPixKey() {
+      const key = document.getElementById('pix-key').textContent;
+      navigator.clipboard.writeText(key).then(() => {
+        alert("Chave Pix copiada com sucesso!");
+      });
+    }
+
+    document.getElementById('voltar-para-principal').addEventListener('click', () => {
+      window.location.href = 'index.html'; // ajuste para o seu arquivo principal
+    });
+  </script>
+</body>
+</html>
